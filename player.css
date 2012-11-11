@@ -1,0 +1,18 @@
+#mainHTML {
+    overflow:hidden;
+    margin:0;
+}
+#mainBody {
+    margin:0;
+}
+#mainTopicFrame {
+    width: 100%;
+    height: 100%;
+}
+#mainGabblyFrame{
+    position:absolute;
+    right: 17px;
+    bottom: -5px;
+    width: 200px;
+    height: 30px;
+}

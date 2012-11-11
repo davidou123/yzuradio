@@ -1,0 +1,20 @@
+a:link {
+	color: #FF6600;
+	text-decoration: none;
+}
+a:visited {
+	color: #FF6600;
+	text-decoration: none;
+}
+a:hover {
+	font-size: 20px;
+	color: #FF9900;
+	text-decoration: none;
+	top: 1px;
+	left: 1px;
+	position: relative;
+}
+a:active {
+	color: #FF9900;
+	text-decoration: none;
+}

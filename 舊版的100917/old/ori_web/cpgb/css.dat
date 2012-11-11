@@ -1,0 +1,61 @@
+<style type=text/css>
+
+body{ 
+
+font-family :Verdana;
+
+background-image : url(\"./image/system/sakura.gif\") 
+
+}
+
+A{ text-decoration: none; }
+
+
+
+A:hover { text-decoration: underline; }
+
+<!--
+
+input,textarea
+
+{
+
+font-size : 9pt ; /*文字大小*/
+
+font-family : Verdana;
+
+color : #7899CC; /*文字色彩*/
+
+background-color : #ffffff ;/*背景色彩*/
+
+border-top : 1px dotted #CC6699 ; /*上框*/
+
+border-bottom : 1px dotted #008000  ; /*下框*/
+
+border-left : 1px dotted #ffb59b  ; /*左框*/
+
+border-right : 1px dotted #6699cc  ; /*右框*/
+
+}
+
+-->
+
+BODY {
+
+scrollbar-face-color:#66CCFF;
+
+scrollbar-highlight-color:#FFFFFF;
+
+scrollbar-3dlight-color:White;
+
+scrollbar-darkshadow-color:#FFFFFF;
+
+scrollbar-shadow-color:#FFFFFF;
+
+scrollbar-arrow-color:White;
+
+scrollbar-track-color:White;
+
+}
+
+</style>

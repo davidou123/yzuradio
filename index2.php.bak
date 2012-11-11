@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="zh-tw">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" href="menu_style.css" type="text/css" />
+	<link rel="stylesheet" href="index.css" type="text/css" />	
+<title>元智之音學生廣播電台</title>
+
+  <style type="text/css"> 
+.leftmenu { 
+  float:right; 
+
+}
+
+/*本日節目*/
+.today{
+	border:none;
+	}
+.today ul{
+	list-style:none;
+	margin:0;
+	padding:0;
+	}
+	.today li{
+		float:left;
+		}
+	.today li a{
+		color:#000;
+		display:block;
+		text-align:center;
+		text-decoration:none;
+		}
+		.today li a:hover{
+			color:#000000;
+			text-decoration:none;
+			}
+	.today li ul{
+	background:#fff;
+		border-top:2px solid #0079b2;
+		border-left:2px solid #0079b2;
+		border-right:2px solid #0079b2;
+		border-bottom:2px solid #0079b2;
+		display:none;
+		height:auto;
+		filter:alpha(opacity=95);
+		opacity:0.95;
+		position:absolute;
+		z-index:200;
+		/*top:1em;
+		/*left:0;*/
+		}
+	.today li:hover ul{
+		display:block;
+		}
+	.today li li {
+		display:block;
+		float:none;
+
+		}
+	.today li ul a{
+		display:block;
+		text-align:left;
+		}
+		.today li ul a:hover{
+		background:#fff;
+		color:#000000;
+			opacity:1.0;
+			filter:alpha(opacity=100);
+			}
+	.today p{
+		clear:left;
+		}
+/*本日節目*/
+
+
+  </style>
+</head>
+
+<body  bgcolor="#2C2C2C">
+<div align="center">
+<table border="0" width="932" cellspacing="0" cellpadding="0"bgcolor="#FFFFFF">
+	<tr><td height="132">
+          <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="936" height="132">
+          <param name="movie" value="banner.swf">
+          <param name="quality" value="high">
+          <embed src="banner.swf" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="936" height="132"></embed></object>
+
+<?php include 'menu_index.php';?>
+
+
+<div align="center"  style="position: relative;top:-5px">
+<table border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td width="680" valign="top" align="center" >
+		<table border="0" width="100%" cellspacing="0" cellpadding="0" background="images/todaybg.JPG" height="50">
+	<tr><td>
+	
+<?php
+date_default_timezone_set("Asia/Taipei");
+ require_once("SQLconnection.php");
+// 建立MySQL資料庫連結
+    $link = create_connection();
+	//內文開始
+$sql = "SELECT * FROM  system";   
+$result = mysql_query($sql); // 執行SQL指令	
+ while ($rows = mysql_fetch_array($result, MYSQL_BOTH)) {
+	$index= $rows['webindex'];
+	$webconter= $rows['webconter'];
+	}
+//內文結束
+if($webconter==""){
+$webconter="1";}
+else{
+$webconter++;
+}
+       // 建立SQL字串
+   $sql = "UPDATE  system SET webconter='".$webconter."' WHERE ID='system'";
+	  // 建立MySQL資料庫連結
+    $link = create_connection();
+      mysql_query($sql);
+
+// 建立SQL指令字串
+$sql = "SELECT * FROM  employee WHERE Djrole='onlineDJ' &&showdate='".date('Y-m-d')."'";   
+$result = mysql_query($sql); // 執行SQL指令
+$time_map=array("12-00","13-00","14-00","15-00","16-00","17-00","18-00","19-00","20-00","21-00","22-00","23-00");
+if (mysql_num_rows($result) != 0) 
+{
+  $i=0;
+  while ($rows = mysql_fetch_array($result, MYSQL_BOTH))
+{
+if($rows['showdate2']=="$time_map[$i]"){  //如果9點有節目就存進去
+$today[$i]['usrname']=$rows['usrname'];
+$today[$i]['nickname']=$rows['nickname'];
+$today[$i]['showname']=$rows['showname'];
+$today[$i]['showcontent']=$rows['showcontent'];
+}
+$i++;
+/*
+if($rows['showdate2']=="21-00"){  //如果9點有節目就存進去
+$today['9']['usrname']=$rows['usrname'];
+$today['9']['nickname']=$rows['nickname'];
+$today['9']['showname']=$rows['showname'];
+$today['9']['showcontent']=$rows['showcontent'];
+}
+else if($rows['showdate2']=="22-00"){ //如果10點有節目就存進去
+$today['10']['usrname']=$rows['usrname'];
+$today['10']['nickname']=$rows['nickname'];
+$today['10']['showname']=$rows['showname'];
+$today['10']['showcontent']=$rows['showcontent'];
+}
+else if($rows['showdate2']=="23-00"){ //如果11點有節目就存進去
+$today['11']['usrname']=$rows['usrname'];
+$today['11']['nickname']=$rows['nickname'];
+$today['11']['showname']=$rows['showname'];
+$today['11']['showcontent']=$rows['showcontent'];
+}
+*/
+	 }
+}
+  mysql_free_result($result);
+if($today['9']['nickname']=="" &&$today['10']['nickname']=="" &&$today['11']['nickname']==""){
+echo "今天整日音樂不設限";}
+else{
+echo"<div class='today'><ul><li>今晚節目</li>";
+IF($today['9']['nickname']!=""){
+ echo"<li><a href='#'>"
+."<img border='0' src='images/9pm.gif' width='32' height='26'>"  //9點圖片
+   ."<B>".$today['9']['nickname']."</B>的　[".$today['9']['showname']."]　</a>";
+   
+   
+   		echo"<ul><li><a href='#'><img border='0' src='DJSHOW/".$today['9']['usrname'].".jpg' width='100' height='100' align='left'>".nl2br($today['9']['showcontent'])."</a></li> </ul> </li>";
+}
+
+
+IF($today['10']['nickname']!=""){
+ echo"<li><a href='#'>"
+."<img border='0' src='images/10pm.gif' width='32' height='26'>"   //10點圖片
+."<B>".$today['10']['nickname']."</B>的　[".$today['10']['showname']."]　</a>";
+
+   		echo"<ul><li><a href='#'><img border='0' src='DJSHOW/".$today['10']['usrname'].".jpg' width='100' height='100' align='left'>".nl2br($today['10']['showcontent'])."</a></li> </ul> </li>";
+}
+
+
+IF($today['11']['nickname']!=""){
+ echo"<li><a href='#'>"
+."<img border='0' src='images/11pm.gif' width='32' height='26'>"  //11點圖片
+."<B>".$today['11']['nickname']."</B>的　[".$today['11']['showname']."]　</a>";
+
+  		echo"<ul><li><a href='#'><img border='0' src='DJSHOW/".$today['11']['usrname'].".jpg' width='100' height='100' align='left'>".nl2br($today['11']['showcontent'])."</a></li> </ul> </li>";
+}
+
+
+
+
+echo"</ul></div>";
+}
+?>	
+
+		</td></tr>
+</table>　		
+
+<!-- 內文開始 -->
+<?echo $index;?>
+
+	
+		
+<!-- 內文結束 -->
+		</td>
+		<td width="250" height="500" valign="top"  align="right" style="padding-right: 2px;padding-left: 0px" background="images/indexleftbg.JPG">
+		
+  <iframe src="http://140.138.5.228:8301/nowplaying.html" TITLE="URL" height="100"
+            width="240" frameborder="0"
+            marginwidth="0" marginheight="0" vspace="0" hspace="0">
+    </iframe>
+
+<img border="0" src="images/indextalk.gif" width="200" height="41">
+<?php include 'chat.php';?>
+</font>
+<p align="center">
+<img border="0" src="images/radioplurk.jpg" width="200" height="41"><br>
+<iframe src="http://www.plurk.com/getWidget?uid=4798431&amp;h=356&amp;w=250&amp;u_info=2&amp;bg=3B5998&tl=F6F6F6" width="250" frameborder="0" height="360" scrolling="no"></iframe></p>
+<div style="float: right; padding: 1px;"> <a href="http://www.plurk.com/yzuradio/invite/4" target="_blank" style="font-size: 10px !important; color: #999 !important; border: none; text-decorate: none;" title="拜訪瑞迪歐的噗浪克">拜訪瑞迪歐的噗浪克</a></div>
+<BR>
+
+<table border="0" width="252" cellspacing="0" cellpadding="0" background="images/hisconter.png" height="51">
+	<tr>
+		<td width="99">　</td>
+		<td width="89"><font color="#872900"><b><? echo $webconter; ?></b></font>　</td>
+	</tr>
+</table>
+
+</div></td>
+	</tr>
+</table>
+</div>
+
+	</td></tr>
+	
+	<tr><td bgcolor="#114087">		
+<?php include 'footer.php';?>
+	</td></tr>
+</table>
+</div>
+
+
+</body>
+
+</html>

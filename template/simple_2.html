@@ -1,0 +1,220 @@
+<HTML>
+  <HEAD lang="en-US">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>foobar2000 song requester</title>
+
+<style type="text/css">
+<!--
+a:link {color: #efe; }
+a:visited {color: #efe; }
+a:hover {color: red; }
+body { 
+	margin-left:5%; 
+	margin-right:5%; 
+	background:#000; 
+	color:#fff; 
+	font-family: tahoma;
+}
+ul {
+	paddng: 0;
+/*	margin-left: 0;
+	margin-right: 0;*/
+}
+.trans li { 
+	text-aligne: center;
+	display: inline; 
+	padding: 0.5em; 
+}
+h4, h5 {
+	text-align: center;
+	margin: 0;
+	border-bottom: 2px solid #695;
+}
+h1 {
+	font-weight: 100;
+	color: #eee;
+}
+.how {
+/*	position: absolute;
+	top: 2em;
+	right: 2em;*/
+	background: #474;
+	float:right;
+	padding-left: 1em;
+	padding-right: 1em;
+	border: 1px solid #695;
+	font-size:80%;
+}
+.current {
+	//padding-top: 0.5em;
+	margin: 2em;
+	text-align: center;
+	font-size: 140%;
+}
+.req_container {
+	padding-left: 2em;
+	padding-right: 2em;
+	width: 100%;
+}
+/*.req_container caption {
+	font-size: 80%;
+}*/
+caption{
+	font-size: 120%;
+}
+table { 
+	border-color: #008080; 
+	border-collapse : collapse; 
+	border-style: solid;
+}
+thead, tfoot, th, tr, td { 
+	border-color: #008080; 
+}
+thead, tfoot { 
+	background: #669955; 
+}
+tfoot { 
+	font-size: 120%; 
+	font-weight: bold; 
+}
+.song_list { 
+	font-size: 80%; 
+}
+.message { 
+	color: red; 
+	font-size:240%; 
+	font-weight: 1000; 
+}
+.listlist, .indexes {
+	font-size: 80%;
+	/*text-align: center;*/
+	margin: 2em;
+	margin-left: 4em;
+	margin-right: 4em;
+	padding-left: 2em;
+	padding-right: 2em;
+	padding-top: 0em;
+	padding-bottom: 0em;
+	/*background: #474;*/
+	/*background: #253;*/
+	/*background: #473;*/
+	/*border-top: 1px solid #695;
+   border-bottom: 2px solid #253;
+   border-left: 1px solid #695;
+   border-right: 2px solid #253;*/
+   border: 1px solid #695;
+}
+/*
+.listlist ul {
+
+	paddng: 0;
+	margin: 0;
+}
+*/
+.listlist ul li {
+	text-aligne: center;
+	/*display: inline; */
+}
+.indexes select {
+	margin-top: 0.4em;
+}
+.search {
+	margin-top:1em;
+	text-align: center;
+}
+.song_list a{
+	text-decoration: none; 
+}
+.s {
+	font-size: 60%;
+}
+.caution {
+	color: yellow;
+}
+<FOOBAR2000-Info>
+.download {
+	display: $ifequal(%enable_download_in_playlist%, 1, table-cell, none);
+}
+</FOOBAR2000-Info>
+-->
+</style>
+
+<script type="text/javascript">
+
+var play_time = null;
+var end_time = null;
+var interval_id = null;
+var play_time_field = null;
+
+function parseTime( time_str )
+{
+	time_str.match(/(\d+):(\d+)/);
+	var m = parseInt(RegExp.$1);
+	var s = parseInt(RegExp.$2);
+	return ( m * 60 + s );
+}
+
+function showTime() {
+	if( play_time == null ) 
+	{
+		play_time_field = document.getElementById('start_time');
+		var v2 = document.getElementById('end_time');
+		if( play_time_field == null || v2 == null )
+		{
+			window.clearInterval(interval_id);
+		}
+		play_time = parseTime( play_time_field.innerHTML );
+		end_time = parseTime( v2.innerHTML );
+		++play_time;
+	}
+	if( play_time != null ) {
+	
+		++play_time;
+		var s = String( play_time % 60 );
+		if( s.length == 1 ) s = "0" + s;
+		var m = String( Math.floor( play_time / 60 ) );
+		play_time_field.innerHTML = m.concat(":", s);
+		
+		if( play_time >= end_time ) {
+			window.clearInterval(interval_id);
+			//play_time_field.innerHTML = "end song";
+		}
+	}
+}
+
+interval_id = window.setInterval(showTime, 1000);
+
+function addRule(selector,declarations){
+ var sheets=document.styleSheets;
+
+ if(sheets){
+  var tSheet=sheets[sheets.length-1];
+
+  if(document.all)
+   tSheet.addRule(selector,declarations);
+
+  else
+   tSheet.insertRule(selector+"{"+declarations+"}"
+    ,tSheet.cssRules.length);
+ }
+}
+</script>
+
+  </head>
+  <body>
+
+
+<!-- play status -->
+	
+	<div class="current">
+<FOOBAR2000-CurrentTrack>
+<p>now playing</a><img src="http://www.assoc-amazon.com/e/ir?t=request-20&amp;l=ur2&amp;o=1" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br><br><strong>
+%artist% - %title%</a><br>
+$if( %album%, '['%album%']', '' )
+</strong><br><span id="start_time">%_time_elapsed%</span> / <span id="end_time">%length%</span> </p>
+</FOOBAR2000-CurrentTrack>
+	</div>
+
+  </body>
+</html>

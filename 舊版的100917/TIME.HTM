@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+</HEAD>
+<BODY>
+           <script language="JavaScript">        
+             var vn="Microsoft Internet Explorer";        
+             var some;        
+             if(navigator.appName!=vn)        
+             some="11";        
+             else        
+             some="1911";         
+             today=new Date();        
+             var h = today.getHours();        
+             var m = today.getMinutes();            
+             function initArray(){        
+             this.length=initArray.arguments.length        
+             for(var i=0;i<this.length;i++)        
+             this[i+1]=initArray.arguments[i]  }        
+             var d=new initArray("星期日", "星期一","星期二", "星期三","星期四", "星期五", "星期六");        
+             document.write("",today.getYear()-some,"年",today.getMonth()+1,"月",today.getDate(),"日",d[today.getDay()+1]," ");         
+           </script> 
+		   <BR>
+<script type="text/javaScript"> 
+document.write("<span id='clock'></span>");
+var now,hours,minutes,seconds,timeValue;
+function showtime(){
+now = new Date();
+hours = now.getHours();
+minutes = now.getMinutes();
+seconds = now.getSeconds();
+timeValue = (hours >= 12) ? "下午 " : "上午 ";
+timeValue += ((hours > 12) ? hours - 12 : hours) + " 點";
+timeValue += ((minutes < 10) ? " 0" : " ") + minutes + " 分";
+timeValue += ((seconds < 10) ? " 0" : " ") + seconds + " 秒";
+clock.innerHTML = timeValue;
+setTimeout("showtime()",100);
+}showtime();</script>
+
+</BODY>
+<HTML>

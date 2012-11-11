@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"> 
+<html> 
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+</head>
+<body>
+	
+<object id='Player' width="320" height="70" 
+classid='CLSID:6BF52A52-394A-11D3-B153-00C04F79FAA6' 
+codebase='http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=5,1,52,701'
+standby='Loading Microsoft Windows Media Player components...' type='application/x-oleobject'>
+<param name='fileName' value="" />
+<param name='URL' value="" />
+<param name="AutoRewind" value="false" />
+<param name='autoStart' value="true" />
+<param name="ShowStatusBar" value="1" />
+<param name="ShowDisplay" value="0" />		          
+<param name='showControls' value="true" />
+<param name='loop' value="false" />
+<EMBED 
+		id="EMBED_Player" 
+		TYPE="application/x-mplayer2" 
+		PLUGINSPAGE="http://www.microsoft.com/Windows/Downloads/Contents/Products/MediaPlayer/" 
+		src="" 
+		NAME="realradio" showcontrols=1 ShowDisplay=0 ShowStatusBar=1 width="320" height="70" autostart="true"></EMBED>
+</object>
+	
+</body>
+<script>
+function initialize(){
+	if (localStorage["PlayAtTheBeginning"] == undefined){
+		localStorage["PlayAtTheBeginning"] = false;
+	}
+	if (localStorage["PlayAtTheBeginning"] == "false"){
+		
+			localStorage["channelTitle"] = "元智之音Radio";
+			
+	}
+}
+initialize();
+</script>
+</html>

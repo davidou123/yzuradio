@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"> 
+<html> 
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+<script src=jquery.js></script>
+
+<style>
+	body{
+		width:290px;
+		height:255px;
+		overflow-x:hidden;
+		overflow-y:auto;
+		background-color:black;
+	}
+</style>
+<base target="WM_PLAYER">
+		<style>
+			body{
+				margin-left: 0px;
+	            margin-top: 0px;
+			}	
+			</style>	
+<div id=Message style="position:absolute;left:53px;top:12px;width:160px;height:25px;background-color:black;color:white;font-weight:bold;">元智之音Radio</div>
+<img src="images/bg.jpg" alt="" border="0" usemap="#Map">
+<map id="Map" name="Map">
+  <area shape="rect" coords="228,7,254,33" class=js js=play href="#">
+  <area class=js shape="rect" js=stop coords="261,10,286,34" href="#">
+  
+  <area class=radio title="元智之音學生廣播電台" 
+  		shape="rect" coords="19,54,287,87" href="http://www.元智之音.tw:9000/*YZU.m3u">
+  <area class=radio title="Hit FM聯播網" 
+  		shape="rect" coords="21,96,287,124" href="mms://bcr.media.hinet.net/RA000034">
+  <area class=radio title="飛碟聯播網" 
+  		shape="rect" coords="21,132,286,162" href="mms://bcr.media.hinet.net/RA000072">
+  <area class=radio title="中廣音樂網" 
+  		shape="rect" coords="20,172,286,197" href="mms://bcr.media.hinet.net/RA000007">
+  <area class=radio title="kiss radio" 
+  		shape="rect" coords="18,205,287,237" href="mms://bcr.media.hinet.net/RA000040">
+		<!--
+  <area class=radio title="香港電台第一台" 
+  		shape="rect" coords="19,243,287,269" href="http://www.rthk.org.hk/live1.asx">
+  <area class=radio title="香港電台第二台" 
+  		shape="rect" coords="19,279,286,311" href="http://www.rthk.org.hk/live2.asx">
+  <area class=radio title="香港電台第三台" 
+  		shape="rect" coords="18,318,285,349" href="http://www.rthk.org.hk/live3.asx">
+  <area class=radio title="香港電台第四台" shape="rect" coords="18,356,284,385" href="http://www.rthk.org.hk/live4.asx">
+  <area class=radio title="香港電台第五台" shape="rect" coords="18,395,285,425" href="http://www.rthk.org.hk/live5.asx">
+  <area class=radio title="香港電台普通話台" shape="rect" coords="19,431,283,461" href="http://www.rthk.org.hk/live6.asx">
+  <area class=radio title="豆瓣电台" shape="rect" coords="18,469,283,499" href="http://douban.fm/radio">
+  <area class=radio title="澳門電台網上直播" shape="rect" coords="18,506,282,536" href="mms://live.tdm.com.mo/audio_cn">
+  <area shape="rect" coords="9,551,291,566" href="http://www.元智之音.tw">
+  -->
+<area shape="rect" coords="19,243,287,269" href="http://www.元智之音.tw">
+</map>
+
+
+<script>
+	var PlayStates = {
+       0: "不明", // Windows Media Player is in an undefined state.
+       1: "停止", // Playback of the current media item is stopped.
+       2: "暫停", // Playback of the current media item is paused. When a media item is paused, resuming playback begins from the same location.
+       3: "播放中", // The current media item is playing.
+       4: "快轉", // The current media item is fast forwarding.
+       5: "倒轉", // The current media item is fast rewinding.
+       6: "緩衝", // The current media item is getting additional data from the server.
+       7: "等待", // Connection is established, but the server is not sending data. Waiting for session to begin.
+       8: "完結", // Media item has completed playback.
+       9: "準備", // Preparing new media item.
+      10: "準備", // Ready to begin playing.
+      11: "連接" // Reconnecting to stream.
+    };
+	var stateTimer = null;
+	var bkg = chrome.extension.getBackgroundPage();
+	var PlayingChannel = "";
+	var PlayingStatus = "";
+	if (bkg.Player.playState != undefined){
+		var player = bkg.Player;
+	} else {
+		var player = bkg.EMBED_Player;
+	}
+	
+	if (localStorage["channelTitle"] != undefined){
+			PlayingChannel = localStorage["channelTitle"];
+			$("#Message").html(PlayingChannel);
+	}
+	
+	function playmusic(mURL)
+	{	
+		// $(player).find("param[name=FileName]").attr("value", mURL);
+		try{
+			player.URL = mURL;
+			$(player).attr("src", mURL);
+		} catch(e){
+			alert(e);
+		}
+		try{
+			player.controls.play();
+		} catch(e){
+			
+			// alert(e);
+		}
+	}
+	function setIconText(text){
+				chrome.browserAction.setBadgeBackgroundColor({color:[255, 255, 255, 20]});
+				chrome.browserAction.setBadgeText({text:text});
+	}
+	function updateTitle(channel, s){
+		if (channel != ""){
+			PlayingChannel = channel;
+			// $("#Message").html(PlayingChannel);
+			channel = channel.substr(0,5);
+			localStorage["channelTitle"] = channel;
+		}
+		if (s != ""){
+			PlayingStatus = s;
+		} else {
+			PlayingStatus = PlayStates[player.playState];
+		}
+		chrome.browserAction.setTitle({title:PlayingChannel +"(" + PlayingStatus +")\n\t davidou製作"});
+		
+	}
+	function updateStates(){
+		PlayingStatus = PlayStates[player.playState];
+		$("#Message").html(PlayingChannel + ":" + PlayingStatus);
+		try{
+			clearTimeout(stateTimer )
+		} catch(e){
+			
+		}
+		setTimeout(updateStates, stateTimer, 5000);
+		
+	}
+	$(function(){
+		
+			$(".radio").click(function(){
+				try{
+					if (player.playState != undefined){
+						var l = $(this).attr("href");
+						var n = $(this).text();
+						var t = $(this).attr("title").substr(0,20);
+						playmusic(l);
+						updateTitle(t, "播放");
+					} else {
+						return true;
+					}
+				} catch(e) {
+					alert("你的CHROME不支持wma播放，請自行安裝wma plug-in!")
+					return true;
+				}
+				return false;
+			
+			
+			})
+			
+			$(".js").click(function(){
+				try{
+					var a = $(this).attr("js");
+					if (a == "play"){
+						chrome.browserAction.setIcon({path:"images/play.png"});
+						player.controls.play();
+						updateTitle("", "播放");
+					} else if (a == "pause"){
+						chrome.browserAction.setIcon({path:"images/pause.png"});
+						player.controls.pause();
+						updateTitle("", "暫停");
+					} else if (a == "stop"){
+						chrome.browserAction.setIcon({path:"images/stop.png"});
+						player.controls.stop();
+						updateTitle("", "暫停");
+						updateStates();
+						try{
+							clearTimeout(stateTimer )
+						} catch(e){
+							
+						}
+					}
+				} catch (e){
+					alert("你的CHROME不支持wma播放，請自行安裝wma plug-in!");
+				}
+				return false;
+			})
+			updateStates()
+	})
+	</script>
+	
+	
+</body>
