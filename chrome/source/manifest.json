@@ -1,0 +1,18 @@
+{
+"update_url":"http://clients2.google.com/service/update2/crx",
+  "name": "元智之音學生廣播電台chrome外掛",
+  "version": "0.1.2",
+  "description": "Y.Z.U. RADIO",
+  "background_page":"bk.html",
+  "options_page": "options.html",
+  "browser_action": {
+    "default_icon": "images/radio.ico",
+
+    "popup": "popup.html"
+  },
+  "icons": {
+      "48": "images/radio.ico"
+   },
+  "permissions": ["tabs"]
+  
+}
